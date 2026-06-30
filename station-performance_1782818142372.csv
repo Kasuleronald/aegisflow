@@ -1,9 +1,0 @@
-Station,Region,Manager,Status,MonthlySales,RiskScore,LastAudit
-"Nairobi Central","Nairobi","James Mwangi","operational","1350000","12","2025-04-15"
-"Mombasa Port","Coast","Amina Hassan","operational","1140000","8","2025-03-20"
-"Kisumu Lakeside","Nyanza","Peter Ochieng","maintenance","660000","35","2025-02-10"
-"Nakuru Highway","Rift Valley","Grace Wanjiku","operational","1650000","5","2025-04-28"
-"Eldoret North","Rift Valley","David Kipchoge","operational","930000","22","2025-01-15"
-"Thika Road Mall","Nairobi","Susan Kamau","operational","2160000","7","2025-04-30"
-"Garissa Junction","North Eastern","Ali Mohamed","suspended","0","85","2025-02-28"
-"Nyeri Town","Central","John Githui","operational","840000","15","2025-03-05"

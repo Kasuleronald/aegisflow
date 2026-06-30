@@ -1,0 +1,12 @@
+Company: KT-Petroleum
+IT Admin: kasule@kt-petroleum.com / adminpass
+Other test accounts (passwords shown):
+Managing Director: md@democo.local / mdpass
+Finance Manager: finance@democo.local / finpass
+HR Manager: hr@democo.local / hrpass
+Fleet Manager: fleet@democo.local / fleetpass
+Maintenance Manager: maint@democo.local / maintpass
+Procurement Manager: procure@democo.local / procurepass
+Station Manager: station@democo.local / stationpass
+Compliance Manager: compliance@democo.local / complpass
+Regular User: user@democo.local / userpass

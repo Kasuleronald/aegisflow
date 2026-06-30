@@ -14,6 +14,15 @@ import Alerts from './pages/Alerts.jsx'
 import FraudDetection from './pages/FraudDetection.jsx'
 import DataImport from './pages/DataImport.jsx'
 import Reports from './pages/Reports.jsx'
+import Companies from './pages/Companies.jsx'
+import Users from './pages/Users.jsx'
+import Roles from './pages/Roles.jsx'
+import HR from './pages/HR.jsx'
+import Finance from './pages/Finance.jsx'
+import Procurement from './pages/Procurement.jsx'
+import Compliance from './pages/Compliance.jsx'
+import Login from './pages/Login.jsx'
+import ProtectedRoute from './components/ProtectedRoute.jsx'
 
 export default function App() {
   return (
@@ -31,20 +40,28 @@ export default function App() {
         }}
       />
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="stations" element={<Stations />} />
-          <Route path="fleet" element={<Fleet />} />
-          <Route path="tanks" element={<Tanks />} />
-          <Route path="maintenance" element={<Maintenance />} />
-          <Route path="contractors" element={<Contractors />} />
-          <Route path="suppliers" element={<Suppliers />} />
-          <Route path="analytics" element={<Analytics />} />
-          <Route path="alerts" element={<Alerts />} />
-          <Route path="fraud" element={<FraudDetection />} />
-          <Route path="import" element={<DataImport />} />
-          <Route path="reports" element={<Reports />} />
+            <Route path="dashboard" element={<ProtectedRoute moduleKey="dashboard"><Dashboard /></ProtectedRoute>} />
+          <Route path="stations" element={<ProtectedRoute moduleKey="stations"><Stations /></ProtectedRoute>} />
+          <Route path="fleet" element={<ProtectedRoute moduleKey="fleet"><Fleet /></ProtectedRoute>} />
+          <Route path="tanks" element={<ProtectedRoute moduleKey="stations"><Tanks /></ProtectedRoute>} />
+          <Route path="maintenance" element={<ProtectedRoute moduleKey="maintenance"><Maintenance /></ProtectedRoute>} />
+          <Route path="contractors" element={<ProtectedRoute moduleKey="hr"><Contractors /></ProtectedRoute>} />
+          <Route path="suppliers" element={<ProtectedRoute moduleKey="suppliers"><Suppliers /></ProtectedRoute>} />
+          <Route path="analytics" element={<ProtectedRoute moduleKey="analytics"><Analytics /></ProtectedRoute>} />
+          <Route path="alerts" element={<ProtectedRoute moduleKey="dashboard"><Alerts /></ProtectedRoute>} />
+          <Route path="companies" element={<ProtectedRoute platformOnly><Companies /></ProtectedRoute>} />
+          <Route path="users" element={<ProtectedRoute moduleKey="admin"><Users /></ProtectedRoute>} />
+          <Route path="roles" element={<ProtectedRoute moduleKey="admin"><Roles /></ProtectedRoute>} />
+          <Route path="hr" element={<ProtectedRoute moduleKey="hr"><HR /></ProtectedRoute>} />
+          <Route path="finance" element={<ProtectedRoute moduleKey="finance"><Finance /></ProtectedRoute>} />
+          <Route path="procurement" element={<ProtectedRoute moduleKey="procurement"><Procurement /></ProtectedRoute>} />
+          <Route path="compliance" element={<ProtectedRoute moduleKey="compliance"><Compliance /></ProtectedRoute>} />
+          <Route path="fraud" element={<ProtectedRoute moduleKey="compliance"><FraudDetection /></ProtectedRoute>} />
+          <Route path="import" element={<ProtectedRoute moduleKey="admin"><DataImport /></ProtectedRoute>} />
+          <Route path="reports" element={<ProtectedRoute moduleKey="reports"><Reports /></ProtectedRoute>} />
         </Route>
       </Routes>
     </>

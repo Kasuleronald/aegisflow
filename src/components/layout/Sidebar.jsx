@@ -1,38 +1,67 @@
 import React from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useStore } from '../../store/useStore.js'
 import {
   LayoutDashboard, Fuel, Truck, Database, Wrench,
   HardHat, Package, BarChart3, Bell, ShieldAlert,
-  Upload, FileText, ChevronLeft, ChevronRight, Zap
+  Upload, FileText, ChevronLeft, ChevronRight, Zap,
+  Users, ShieldCheck, Briefcase, ClipboardList
 } from 'lucide-react'
 
 const NAV = [
   { label: 'Overview', items: [
-    { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { path: '/alerts', icon: Bell, label: 'Alerts', badge: 'alerts' },
-    { path: '/analytics', icon: BarChart3, label: 'Analytics' },
+    { path: '/dashboard', module: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    { path: '/alerts', module: 'dashboard', icon: Bell, label: 'Alerts', badge: 'alerts' },
+    { path: '/analytics', module: 'analytics', icon: BarChart3, label: 'Analytics' },
   ]},
   { label: 'Operations', items: [
-    { path: '/stations', icon: Fuel, label: 'Stations' },
-    { path: '/fleet', icon: Truck, label: 'Fleet' },
-    { path: '/tanks', icon: Database, label: 'Tanks & Inventory' },
-    { path: '/maintenance', icon: Wrench, label: 'Maintenance' },
+    { path: '/stations', module: 'stations', icon: Fuel, label: 'Stations' },
+    { path: '/fleet', module: 'fleet', icon: Truck, label: 'Fleet' },
+    { path: '/tanks', module: 'stations', icon: Database, label: 'Tanks & Inventory' },
+    { path: '/maintenance', module: 'maintenance', icon: Wrench, label: 'Maintenance' },
+  ]},
+  { label: 'People & Admin', items: [
+    { path: '/users', module: 'admin', icon: Users, label: 'Users' },
+    { path: '/roles', module: 'admin', icon: ClipboardList, label: 'Roles' },
+    { path: '/hr', module: 'hr', icon: Briefcase, label: 'HR' },
+  ]},
+  { label: 'Platform', items: [
+    { path: '/companies', module: 'platform_admin', icon: ShieldCheck, label: 'Companies' },
+  ]},
+  { label: 'Finance & Supply', items: [
+    { path: '/finance', module: 'finance', icon: FileText, label: 'Finance' },
+    { path: '/procurement', module: 'procurement', icon: Package, label: 'Procurement' },
+    { path: '/suppliers', module: 'suppliers', icon: Package, label: 'Suppliers' },
   ]},
   { label: 'Compliance', items: [
-    { path: '/fraud', icon: ShieldAlert, label: 'Fraud Detection' },
-    { path: '/contractors', icon: HardHat, label: 'Contractors' },
-    { path: '/suppliers', icon: Package, label: 'Suppliers' },
+    { path: '/fraud', module: 'compliance', icon: ShieldCheck, label: 'Fraud Detection' },
+    { path: '/compliance', module: 'compliance', icon: ShieldAlert, label: 'Compliance' },
+    { path: '/contractors', module: 'hr', icon: HardHat, label: 'Contractors' },
   ]},
   { label: 'Data', items: [
-    { path: '/import', icon: Upload, label: 'Import Data' },
-    { path: '/reports', icon: FileText, label: 'Reports' },
+    { path: '/import', module: 'admin', icon: Upload, label: 'Import Data' },
+    { path: '/reports', module: 'reports', icon: FileText, label: 'Reports' },
   ]},
 ]
 
 export default function Sidebar() {
-  const { sidebarOpen, toggleSidebar, alerts } = useStore()
+  const { sidebarOpen, toggleSidebar, alerts, user, logout } = useStore()
+  const navigate = useNavigate()
   const activeAlerts = alerts.filter(a => a.status === 'active').length
+
+  const canRead = (moduleKey) => {
+    if (!moduleKey) return false
+    if (moduleKey === 'platform_admin') return user?.type === 'platform_admin'
+    if (!user?.permissions) return false
+    return user.permissions.some((perm) => perm.module === moduleKey && perm.can_read)
+  }
+
+  const filteredNav = NAV
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) => !item.module || canRead(item.module)),
+    }))
+    .filter((group) => group.items.length > 0)
 
   return (
     <aside style={{
@@ -67,7 +96,7 @@ export default function Sidebar() {
 
       {/* Nav groups */}
       <nav style={{ flex: 1, padding: '12px 10px' }}>
-        {NAV.map(group => (
+        {filteredNav.map(group => (
           <div key={group.label} style={{ marginBottom: 20 }}>
             <div style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', padding: '0 10px', marginBottom: 6 }}>
               {group.label}
@@ -113,13 +142,22 @@ export default function Sidebar() {
       </nav>
 
       {/* User footer */}
-      <div style={{ padding: '14px 16px', borderTop: '1px solid var(--border)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--accent-dim)', border: '1px solid var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: 'var(--accent)' }}>AU</div>
+      <div style={{ padding: '10px 12px', borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1 }}>
+          <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--accent-dim)', border: '1px solid var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: 'var(--accent)' }}>{(user && user.name) ? user.name.split(' ').map(n=>n[0]).join('').slice(0,2) : 'AU'}</div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Admin User</div>
-            <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Super Admin</div>
+            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{(user && user.name) || 'Admin User'}</div>
+            <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{(user && (user.role || user.roleName)) || 'User'}</div>
           </div>
+        </div>
+        <div>
+          <button
+            onClick={() => { logout(); navigate('/login') }}
+            className="btn btn-ghost"
+            style={{ padding: '6px 8px', borderRadius: 8, fontSize: 13 }}
+          >
+            Logout
+          </button>
         </div>
       </div>
     </aside>

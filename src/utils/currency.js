@@ -22,7 +22,7 @@ export const convertFromKES = (amountInKES, targetCode) => {
 }
 
 // Formats a KES-denominated amount into the selected currency, with compact notation for large numbers.
-export const formatCurrency = (amountInKES, currencyCode, { compact = true } = {}) => {
+export const formatCurrency = (amountInKES, currencyCode = 'USD', { compact = true } = {}) => {
   const target = getCurrency(currencyCode)
   const converted = convertFromKES(amountInKES, currencyCode)
 
