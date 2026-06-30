@@ -1,0 +1,2 @@
+
+mkdir -p /home/claude/aegisflow/src/{components/{layout,dashboard,stations,fleet,tanks,maintenance,contractors,suppliers,analytics,alerts,fraud},hooks,utils,data,pages,styles} && echo "Structure created"
