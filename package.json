@@ -5,7 +5,7 @@
   "description": "AegisFlow Multi-Tenant ERP (React + Vite + Express)",
   "type": "module",
   "main": "src/index.js",
-  "scripts": {
+   "scripts": {
     "client": "vite",
     "server": "node --watch src/index.js",
     "dev": "vite",
@@ -14,7 +14,8 @@
     "preview": "vite preview",
     "migrate:platform": "node src/db/migratePlatform.js",
     "seed:admin": "node src/db/seedPlatformAdmin.js",
-    "autosync": "git add . && git commit -m 'autosync' && git push"
+    "autosync": "git add . && git commit -m 'autosync' && git push",
+    "deploy": "npm run build && npm run migrate:platform"
   },
 
   "dependencies": {
